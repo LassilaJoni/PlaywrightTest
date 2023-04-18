@@ -1,13 +1,23 @@
 import { test, expect } from '@playwright/test';
+import { AxePlaywright } from '@axe-playwright';
 
 test('Uutiset', async ({ page }) => {
+  const context = await page.context();
+  const { violations } = await new AxePlaywright(context).analyze();
+  expect(violations.length).toBe(0);
+
   await page.goto('https://areena.yle.fi/tv/opas');
   await page.locator('span').filter({ hasText: '22.00 Kymmenen uutiset' }).getByRole('time').first().click();
   await page.locator('span').filter({ hasText: '22.00 Kymmenen uutiset' }).getByRole('time').first().click();
   await page.getByText('22.00 Kymmenen uutiset 19 min').click();
   await page.getByText('19 min').first().click();
 });
+
 test('Kanavat', async ({ page }) => {
+  const context = await page.context();
+  const { violations } = await new AxePlaywright(context).analyze();
+  expect(violations.length).toBe(0);
+
   await page.goto('https://areena.yle.fi/tv/opas');
   await page.getByRole('heading', { name: 'Yle TV1' }).getByRole('link', { name: 'Yle TV1' }).click();
   await page.getByRole('heading', { name: 'Yle TV2' }).getByRole('link', { name: 'Yle TV2' }).click();
