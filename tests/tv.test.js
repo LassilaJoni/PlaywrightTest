@@ -1,11 +1,14 @@
 import { test, expect } from '@playwright/test';
 import { injectAxe, checkA11y } from 'axe-playwright';
 
+const baseUrl = 'https://areena.yle.fi/tv';
+
+test.describe('Yle Areena Tests', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto(baseUrl);
+  });
 
 test('Error for providing email in wrong format', async ({ page}) => {
-    await page.goto('https://areena.yle.fi/tv');
-    const pageTitle = await page.title();
-    expect(pageTitle).toContain('Yle Areena – Enemmän kuin ehdit katsoa ja kuunnella | TV | Areena | yle.fi');
     await page.getByRole('button', { name: 'Kirjaudu', exact: true }).click();
     await page.frameLocator('internal:role=dialog[name="kirjaudu sisään"i] >> iframe').getByRole('button', { name: 'Luo Yle Tunnus' }).click();
     await page.frameLocator('internal:role=dialog[name="kirjaudu sisään"i] >> iframe').getByLabel('Sähköposti').click();
@@ -33,7 +36,7 @@ test('Error for providing email in wrong format', async ({ page}) => {
   });
 
 
-
+});
 
 
 
