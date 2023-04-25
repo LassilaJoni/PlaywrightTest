@@ -14,6 +14,7 @@ module.exports = defineConfig({
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
+  timeout: 600000,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
@@ -33,9 +34,35 @@ module.exports = defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
+    // -- BrowserStack Projects --
+    // name should be of the format browser@browser_version:os os_version@browserstack
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: 'chrome@latest:Windows 10@browserstack',
+      use: {
+        browserName: 'chromium',
+        channel: 'chrome'
+      },
+    },
+    {
+      name: 'edge@90:Windows 10@browserstack',
+      use: {
+        browserName: 'chromium'
+      },
+    },
+    {
+      name: 'playwright-firefox@latest:Windows 10@browserstack',
+      use: {
+        browserName: 'firefox',
+        ignoreHTTPSErrors: true
+      },
+    },
+    {
+      name: 'playwright-webkit@latest:Windows 10@browserstack',
+      use: {
+        browserName: 'webkit',
+        // Config to use playwright emulated devices.
+        // ...devices['iPhone 12 Pro Max'],
+      },
     },
 
     /* Test against mobile viewports. */

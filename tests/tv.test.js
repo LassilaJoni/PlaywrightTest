@@ -1,14 +1,27 @@
-import { test, expect } from '@playwright/test';
+import {expect, beforeAll, beforeEach, afterAll, afterEach, Browser, BrowserContext } from '@playwright/test';
 import { injectAxe, checkA11y } from 'axe-playwright';
+import { timeout } from '../playwright.config';
+const { test } = require('../fixtures');
 
 const baseUrl = 'https://areena.yle.fi/tv';
 
 test.describe('Yle Areena Tests', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto(baseUrl);
-  });
+  let browser;
 
-test('Error for providing email in wrong format', async ({ page}) => {
+  test('Error for providing email in wrong format', async ({page}) => {
+    await page.goto(baseUrl);
+    try {
+      await page.waitForSelector('[role="button"][name="Hyväksy kaikki"]', { timeout: 3000 });
+
+      // Click the button if found
+      const acceptButton = await page.$('[role="button"][name="Hyväksy kaikki"]');
+      if (acceptButton) {
+        await acceptButton.click();
+        await page.waitForTimeout(2000);
+      }
+    } catch (error) {
+      console.log('Cookie consent button not found, proceeding without clicking it.');
+    }
     await page.getByRole('button', { name: 'Kirjaudu', exact: true }).click();
     await page.frameLocator('internal:role=dialog[name="kirjaudu sisään"i] >> iframe').getByRole('button', { name: 'Luo Yle Tunnus' }).click();
     await page.frameLocator('internal:role=dialog[name="kirjaudu sisään"i] >> iframe').getByLabel('Sähköposti').click();
@@ -17,7 +30,8 @@ test('Error for providing email in wrong format', async ({ page}) => {
     await page.frameLocator('internal:role=dialog[name="kirjaudu sisään"i] >> iframe').getByText('Tarkista sähköpostiosoitteen muoto.');
   });
 
-  test('Accessibility test' , async ({ page }) => {
+  test('Accessibility test' , async ({page}) => {
+    await page.goto(baseUrl);
     await injectAxe(page);
     const axePlaywrightConfig = {
       saveResult: true,
@@ -34,10 +48,4 @@ test('Error for providing email in wrong format', async ({ page}) => {
       console.error(`Accessibility check failed: ${e.message}`);
     }
   });
-
-
 });
-
-
-
-

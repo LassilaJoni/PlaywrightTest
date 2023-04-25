@@ -1,4 +1,5 @@
-import { test, expect } from '@playwright/test';
+import {expect } from '@playwright/test';
+const { test } = require('../fixtures');
 import AxeBuilder from '@axe-core/playwright';
 
 test('Kummeli test', async ({ page }, testInfo) => {

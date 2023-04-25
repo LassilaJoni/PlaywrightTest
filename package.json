@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "npx playwright test --config=./playwright.config.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -13,6 +15,8 @@
   "dependencies": {
     "@axe-core/playwright": "^4.6.1",
     "axe-core": "^4.7.0",
-    "axe-playwright": "^1.2.3"
+    "axe-playwright": "^1.2.3",
+    "browserstack-local": "^1.5.2",
+    "playwright": "^1.32.3"
   }
 }

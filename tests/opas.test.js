@@ -1,5 +1,6 @@
-import { test, expect } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { AxePlaywright } from '@axe-playwright';
+const { test } = require('../fixtures');
 
 test('Uutiset', async ({ page }) => {
   const context = await page.context();
